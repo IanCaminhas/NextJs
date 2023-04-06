@@ -1,0 +1,51 @@
+.container {
+    height: 5rem;
+    border-bottom: 1px solid var(--gray800);
+}
+
+.content {
+    max-width: 1120px;
+    height: 5rem;
+    margin: 0 auto; //em telas maiores que 1120 px em cima e em baixo... auto é automáico na direita e esquerda...
+    padding: 0 2rem;  // telas menores que 1120px pra não ficar tudo agarrado dos lado, 0 em cima e embaxo. 2rem na esquerda e direita
+    //centralizado verticalmente lado a lado
+    display: flex;
+    align-items: center; 
+
+    img {
+        height: 3.75rem; //tamanho da imagem
+    }
+
+    nav {
+        margin-left: 5rem; //5rem para se afastar da imagem
+        height: 5rem;//para garantir que fique centralizado verticalmente
+
+        a{
+            display: inline-block;
+            position: relative;
+            padding: 0 0.5rem;
+            height: 5rem;
+            line-height: 5rem;
+            color: var(--gray300);
+            transition: color 0.2s;//quando o mouse passar por cima vai mudar de cor. Esse efeito vai durar 0.2s
+
+            //estilização a patir do segundo menu
+            & + a{ 
+                margin-left: 2rem;
+            } 
+
+            //efeito de quando o mouse passa por cima
+            &:hover {
+                color: var(--white); //quando o mouse passar em cima, a cor vai ser branca
+            }
+
+            //quando o link estiver ativo, ele terá uma estilização
+            //O elemento que estiver com a classe active, a cor branca vai ficar ativa e o bold também
+            &.active {
+                color: var(--white);
+                font-weight: bold;
+            }
+
+        }
+    }
+}

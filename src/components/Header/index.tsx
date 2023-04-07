@@ -1,6 +1,5 @@
-import { useRouter } from 'next/router';
 import styles from './styles.module.scss'
-import Link from 'next/link';
+import { ActiveLink } from '../ActiveLink';
 
 export function Header(){
 
@@ -9,14 +8,20 @@ export function Header(){
         Também posso fazer isso:  
         const router = useRouter();
         router.asPath
+
     */
-    //
-    const {asPath} = useRouter();
+    //Não preciso usar aqui o const {asPath} = useRouter()... Pois vou usar no ActiveLink Component
+    //const {asPath} = useRouter();
    
     /*
         Quando a rota for igual a rota do link(ou seja, rota atual), fica ativado
         <Link href="/" className={asPath === '/' ? styles.active : ''}>Home</Link> 
         <Link href="/posts" className={asPath === '/posts' ? styles.active : ''}>Posts</Link>
+
+        Posso fazer assim também: manter a estilização diferente para o link referente à página que o usuário está acessando no momento:
+        <Link href="/" className={asPath === '/' ? styles.active : ''}>Home</Link> 
+        <Link href="/posts" className={asPath === '/posts' ? styles.active : ''}>Posts</Link>
+        Vou usar um componente para isso: ActiveLink Component
     */
 
     return (
@@ -24,8 +29,8 @@ export function Header(){
             <div className={styles.content}>
                 <img src="/logo.svg" alt="DevNews!" />
                 <nav>
-                    <Link href="/" className={asPath === '/' ? styles.active : ''}>Home</Link> 
-                    <Link href="/posts" className={asPath === '/posts' ? styles.active : ''}>Posts</Link>
+                    <ActiveLink href="/" activeClassName={styles.active} titleLink="Home" /> 
+                    <ActiveLink href="/posts" activeClassName={styles.active} titleLink="Posts" />
                 </nav>
             </div>
         </header>

@@ -5,8 +5,8 @@ Quando faço o build de produção, o next nesse processo já cria as páginas e
 
 O resultado: um HTML construído no build da aplicação. Ganho em performance, pois o conteúdo já está na página HTML.
 Não há requisição para API, acesso ao banco de dados... Tudo foi feito no processo build
-
 */
+
 interface Post {
   id:string;
   title: string;
@@ -15,7 +15,6 @@ interface Post {
 interface PostsProps {
   posts: Post[];
 }
-
 
 export default function Posts({posts}: PostsProps) {
     return (

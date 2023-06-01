@@ -8,6 +8,8 @@ const Modal = dynamic(
     {
       //spinner, ou seja, enquanto o componente é carregado isso fica para o usuário.
       loading: () => <p>Loading...</p>,
+      /* Para carregar dinamicamente um componente no lado do cliente, você pode usar a ssr opção para desabilitar 
+      a renderização do servidor.Isso é útil se uma dependência ou componente externo depender de APIs de navegador como window*/
       ssr: false,
     },
   );

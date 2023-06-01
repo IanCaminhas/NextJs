@@ -15,7 +15,7 @@ const Modal = dynamic(
   );
 
 export default function calculo() {
-    const [modalVisible, setModalVisible] = useState(false);;
+    const [modalVisible, setModalVisible] = useState(false);
 
     async function handleSum() {
         //Antes era sim: import calc from '../libs/calc'... Não vou ter esse carregamento automático

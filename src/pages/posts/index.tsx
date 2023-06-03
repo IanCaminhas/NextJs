@@ -1,4 +1,5 @@
 import { GetStaticProps } from "next";
+import SEO from '../../components/SEO';
 
 /*As páginas do ssg(GetStaticProps) são criadas no build da aplicação.
 Quando faço o build de produção, o next nesse processo já cria as páginas estáticas: HTML, CSS... tudo que é necessário para renderizar a página
@@ -19,6 +20,7 @@ interface PostsProps {
 export default function Posts({posts}: PostsProps) {
     return (
       <div>
+        <SEO title="Posts"/>
         <h1>Listagem de Posts</h1>
         <ul>
           {posts.map(post => (

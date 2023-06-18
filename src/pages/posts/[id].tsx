@@ -82,7 +82,6 @@ export const getStaticPaths: GetStaticPaths = async() => {
     Existem os seguintes posts: 1, 2, 3 e 4. Se eu fizer http://localhost:3000/posts/12, vai dar uma página 404.
     Quando uso esse caso ? quando tenho poucos registros e posso criar essas páginas estáticas no processo de build.
 
-
     Quando vou usar o fallback como true então ? fallback:true
     quando usar o paths com array vazio. O que isso siginica ? Se não tiver uma página estática criada, cria agora.
     
@@ -97,7 +96,6 @@ export const getStaticPaths: GetStaticPaths = async() => {
     fallback: true,
   }
 }
-
 
 export const getStaticProps: GetStaticProps<CommentsProps> = async context => {
   const { id } = context.params;

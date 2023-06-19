@@ -1,7 +1,9 @@
 import { GetStaticProps } from "next";
+import Prismic from '@prismicio/client';
 import SEO from '../../components/SEO';
 import Link from "next/link";
 import styles from './posts.module.scss';
+import { getPrismicClient } from "../api/services/prismic";
 
 interface Post {
   id:string;
@@ -28,7 +30,21 @@ export default function Posts() {
     );
   }
   export const getStaticProps: GetStaticProps = async () => {
-  
+    //Isso aqui é a conexão com a API. Através disso aqui, consigo fazer uma query e trazer os dados
+    const prismic = getPrismicClient();
+    //at recebe o que vou procurar
+    const response = await prismic.query([
+      Prismic.predicates.at('document.type', 'post')
+    ], {
+      fetch: ['post.title', 'post.content'],
+    }
+    );
+    /*
+    Olha no console do terminal
+    console.log(response);
+    Já vem de forma paginada ainda
+    */
+
     return {
       props: {},
       // In seconds - O servidor node vai ficar recriando a página a cada 5 segundos. /posts (ISR: 5 Seconds)

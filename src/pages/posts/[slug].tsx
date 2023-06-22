@@ -1,6 +1,31 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import {useRouter} from 'next/router'
+import SEO from '../../components/SEO';
+import styles from './post.module.scss'
 
+export default function Post() {
+    const router = useRouter();
+
+    if(router.isFallback){
+      return <p>Loading...</p>
+    }
+
+    return (
+      <>
+        <SEO title="Post"/>
+
+        <main className={styles.container}>
+          <article className={styles.post}>
+            <h1>Título</h1>
+            <time>Data</time>
+            <div>Conteúdo</div>
+          </article>
+        </main>
+      </>
+    );
+  }
+
+/*
 interface Comment {
   id: string;
   body: string;
@@ -30,7 +55,7 @@ export default function Post({ comments }: CommentsProps) {
     </>
     );
   }
-
+*/
 //Quando uso esse método ? quando preciso criar página estática que recebe parâmetro.
 //através desse método, o next buscará todos os posts que podem ser usados como parâmetros e criar uma página para cada um desses posts
 /*Esse método retorna o objeto que dois parâmetros: paths -> 
@@ -97,6 +122,7 @@ export const getStaticPaths: GetStaticPaths = async() => {
   }
 }
 
+/*
 export const getStaticProps: GetStaticProps<CommentsProps> = async context => {
   const { id } = context.params;
   const response =  await fetch(`http://localhost:3333/comments?postId=${id}`);
@@ -109,3 +135,11 @@ export const getStaticProps: GetStaticProps<CommentsProps> = async context => {
       revalidate: 5,
     };
   }
+  */
+
+  export const getStaticProps: GetStaticProps<> = async context => {  
+      return {
+        props: {},
+        revalidate: 60 * 60 * 12, // 12 horas
+      };
+    }

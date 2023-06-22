@@ -18,7 +18,7 @@ export default function Post() {
           <article className={styles.post}>
             <h1>Título</h1>
             <time>Data</time>
-            <div>Conteúdo</div>
+            <div className={styles.content}>Conteúdo</div>
           </article>
         </main>
       </>

@@ -24,13 +24,13 @@ export default function Posts({ posts }: PostsProps) {
 
         <main className={styles.container}>
           <div className={styles.posts}>
-            {posts.map(post =>(
-              <Link href={`/posts/${post.slug}`} key={post.slug}>
+          {posts.map(post => (
+            <Link href={`/posts/${post.slug}`} key={post.slug}>
                 <time>{post.updatedAt}</time>
                 <strong>{post.title}</strong>
                 <p>{post.excerpt}</p>
             </Link>
-            ))}
+          ))}
           </div>
         </main>
       </>
@@ -62,7 +62,7 @@ export default function Posts({ posts }: PostsProps) {
         title: RichText.asText(post.data.title), //erro normal
         excerpt: //é uma espécie de resumo
           post.data.content.find(content => content.type === 'paragraph')?.text ?? //erro normal
-          '',
+         '',
           //isso aqui é do próprio nextjs...JavaScript na verdade
         updatedAt: new Date(post.last_publication_date).toLocaleDateString(
           'pt-BR',

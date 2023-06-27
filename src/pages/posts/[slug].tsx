@@ -1,7 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import {useRouter} from 'next/router';
-import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { getPrismicClient } from '../api/services/prismic';
 import SEO from '../../components/SEO';
 import styles from './post.module.scss';
@@ -11,15 +12,15 @@ interface PostProps {
   slug: string;
   title: string;
   content: string;
-  updateAt: string;
- }
+  updatedAt: string;
+ };
 }
 
 export default function Post({ post }: PostProps) {
     const router = useRouter();
 
     if(router.isFallback){
-      return <p>Loading...</p>
+      return <p>Loading...</p>;
     }
 
     return (
@@ -29,7 +30,7 @@ export default function Post({ post }: PostProps) {
         <main className={styles.container}>
           <article className={styles.post}>
             <h1>{post.title}</h1>
-            <time>{post.updateAt}</time>
+            <time>{post.updatedAt}</time>
             <div className={styles.content} dangerouslySetInnerHTML={{__html: post.content}} />
           </article>
         </main>
@@ -70,12 +71,12 @@ export default function Post({ comments }: CommentsProps) {
 */
 //Quando uso esse método ? quando preciso criar página estática que recebe parâmetro.
 //através desse método, o next buscará todos os posts que podem ser usados como parâmetros e criar uma página para cada um desses posts
-/*Esse método retorna o objeto que dois parâmetros: paths -> 
-que são os caminhos/possibilidades, ou seja, vai criar uma página para cada uma delas 
+/*Esse método retorna o objeto que dois parâmetros: paths ->
+que são os caminhos/possibilidades, ou seja, vai criar uma página para cada uma delas
 fallback ->
 
 Se eu fizer paths: [], já funciona. Não necessitando passar {params: {}}. O que acontece ?
-Não vai criar nenhuma página na build. Entretanto, no primeiro acesso a cada página vai ser criadoo HTML. 
+Não vai criar nenhuma página na build. Entretanto, no primeiro acesso a cada página vai ser criadoo HTML.
 A partir do segundo acesso, o usuário vai acessar a página criada no primeiro acesso.
 Isso pode ser uma solução para os 50000 posts
 Quando ocorrer o primeiro acesso, vai ter um delay(tem que criar a página). Mas quando acessar pela segunda vez, esse delay acaba.
@@ -96,7 +97,6 @@ Pegar a lista de posts, informá-la no params. Aí vai ser gerada uma página HT
     cada post uma página
 */
 
-
 export const getStaticPaths: GetStaticPaths = async() => {
   //const response =  await fetch('http://localhost:3333/posts');
   //const posts = await response.json();
@@ -110,7 +110,7 @@ export const getStaticPaths: GetStaticPaths = async() => {
 
   return {
     paths:[], //paths: paths -> short sintax. Poderia fazer assim também
-   
+
     /*esse fallback é o seguinte: quando eu sei quais estáticos a serem gerados, devo usar false.
     Qual estático ? os posts. No caso aqui, eu sei que precisam ser geradas quatro páginas estáticas.
     Se eu tiver acessando algum post que não está na seguinte listagem: params: {id: String(post.id) },
@@ -121,18 +121,18 @@ export const getStaticPaths: GetStaticPaths = async() => {
 
     Quando vou usar o fallback como true então ? fallback:true
     quando usar o paths com array vazio. O que isso siginica ? Se não tiver uma página estática criada, cria agora.
-    
+
     Existem os seguintes posts: 1, 2, 3 e 4. Se eu fizer http://localhost:3000/posts/12, vai dar uma página estática vai ser criada.
     Não vai ser criada uma página 404.
-    Quando usar essa forma: quando tenho muitos registros. Aí não vale a pena usar utilizar o processo de build. Imagina 50000 
+    Quando usar essa forma: quando tenho muitos registros. Aí não vale a pena usar utilizar o processo de build. Imagina 50000
     páginas estáticas ?
 
     Isso é fantástico, pois ganho performance e nada fica engessado.
 
     */
     fallback: true,
-  }
-}
+  };
+};
 
 /*
 export const getStaticProps: GetStaticProps<CommentsProps> = async context => {
@@ -149,29 +149,26 @@ export const getStaticProps: GetStaticProps<CommentsProps> = async context => {
   }
   */
 
-  export const getStaticProps: GetStaticProps = async context => {  
-      const {slug} = context.params;
-      const prismic = getPrismicClient();
-      const response = await prismic.getByUID('post', String(slug), {});
-
+  export const getStaticProps: GetStaticProps = async context => {
+    const { slug } = context.params;
+    const prismic = getPrismicClient();
+    const response = await prismic.getByUID('post', String(slug), {});
+    
       const post = {
         slug,
         title: RichText.asText(response.data.title),
-        content: RichText.asText(response.data.content),
-        updatedAt: new Date(response.last_publication_date).toLocaleDateString(
-          'pt-BR',
-          {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-          },
+        content: RichText.asHtml(response.data.content),
+        updatedAt: format(
+          new Date(response.last_publication_date),
+          "d 'de' MMMM 'de' yyyy",
+          { locale: ptBR },
         ),
       };
 
       return {
         props: {
-          post
+          post,
         },
         revalidate: 60 * 60 * 12, // 12 horas
       };
-    }
+    };

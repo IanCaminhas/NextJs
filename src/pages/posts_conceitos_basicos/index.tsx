@@ -17,15 +17,15 @@ interface PostsProps {
   posts: Post[];
 }
 
-export default function Posts() {
+export default function Posts({posts}: PostsProps) {
     return (
       <div>
         <SEO title="Posts"/>
         <h1>Listagem de Posts</h1>
         <ul>
-          {posts.map(post => (
+        {posts.map(post => (
             <li key={post.id}>{post.title}</li>
-          ))}
+          ))} 
         </ul>
       </div>
     );
